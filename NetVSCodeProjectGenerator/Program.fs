@@ -8,6 +8,7 @@ let baseCommands =
     [|
         "new sln -o ¤basedirectory¤/¤SolutionName¤" ;
         "new ¤project¤ -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤" ;
+
         "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.fsproj" ;
     |]
 
