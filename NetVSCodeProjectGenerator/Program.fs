@@ -6,10 +6,9 @@ open System.Threading
 
 let baseCommands =
     [|
-        "new sln -o ¤basedirectory¤/¤SolutionName¤" ;
-        "new ¤project¤ -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤" ;
-
-        "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.fsproj" ;
+        "new sln -o ¤basedirectory¤/¤SolutionName¤";
+        "new ¤project¤ -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤";
+        "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.fsproj";
     |]
 
 let buildJson = "
@@ -73,7 +72,7 @@ let launchJson = "
 let rec getUserInput msg validator =
     printfn "%s " msg
     let input = Console.ReadLine()
-    if validator input = true then
+    if validator input then
         input
     else
         getUserInput msg validator
@@ -93,11 +92,12 @@ let main argv =
     let solutionName =
         getUserInput
             "Please enter the name of your solution"
-            (fun x -> not <| String.IsNullOrWhiteSpace(x))
-    let programmingLanguage =
+            (String.IsNullOrWhiteSpace >> not)
+    let programmingLanguageInput =
         getUserInput
-            ("Please pick desired programming language:" + Environment.NewLine + "1: F#" + Environment.NewLine + "2: C#")
-            (fun x -> x = "1" || x = "2")
+            (sprintf "Please pick desired programming language:%s1: F#%s2: C#%s3: Visual Basic"
+                Environment.NewLine Environment.NewLine Environment.NewLine)            
+            (fun x -> x = "1" || x = "2" || x = "3")
 
     for i in 0 .. baseCommands.Length - 1 do
         let command = ((Array.get baseCommands i).Replace("¤basedirectory¤", basedirectory).Replace("¤SolutionName¤", solutionName))
@@ -107,7 +107,7 @@ let main argv =
 
     let targetFramework =
         let xml = File.ReadAllText(basedirectory + "/" + solutionName + "/" + solutionName + "/" + solutionName + ".fsproj")
-        let doc = new XmlDocument() in
+        let doc = XmlDocument() in
             doc.LoadXml xml;
             doc.SelectNodes "/Project/PropertyGroup/TargetFramework/text()"
                 |> Seq.cast<XmlNode>
