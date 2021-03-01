@@ -7,8 +7,8 @@ open System.Threading
 let baseCommands =
     [|
         "new sln -o ¤basedirectory¤/¤SolutionName¤";
-        "new ¤project¤ -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤";
-        "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.fsproj";
+        "new console -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤";
+        "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.¤langFileEnding¤";
     |]
 
 let buildJson = "
@@ -64,7 +64,7 @@ let launchJson = "
                 \"args\": [],
                 \"cwd\": \"${workspaceFolder}\",
                 \"stopAtEntry\": false,
-                \"console\": \"internalConsole\"
+                \"console\": \"externalTerminal\"
             },
         ]
     }"
@@ -98,15 +98,27 @@ let main argv =
             (sprintf "Please pick desired programming language:%s1: F#%s2: C#%s3: Visual Basic"
                 Environment.NewLine Environment.NewLine Environment.NewLine)            
             (fun x -> x = "1" || x = "2" || x = "3")
+        
+    let dotNetLanguage=
+        match programmingLanguageInput with
+        | "1" -> "F#"
+        | "2" -> "C#"
+        |_ -> "VB"
+
+    let dotNetLanguageFileEnding=
+        match programmingLanguageInput with
+        | "1" -> "fsproj"
+        | "2" -> "csproj"
+        |_ -> "vbproj"
 
     for i in 0 .. baseCommands.Length - 1 do
-        let command = ((Array.get baseCommands i).Replace("¤basedirectory¤", basedirectory).Replace("¤SolutionName¤", solutionName))
+        let command = ((Array.get baseCommands i).Replace("¤basedirectory¤", basedirectory).Replace("¤SolutionName¤", solutionName)).Replace("¤lang¤", dotNetLanguage).Replace("¤langFileEnding¤", dotNetLanguageFileEnding)
         printfn "dotnet %s" command
         let p = Process.Start("dotnet", command)
         p.WaitForExit()
 
     let targetFramework =
-        let xml = File.ReadAllText(basedirectory + "/" + solutionName + "/" + solutionName + "/" + solutionName + ".fsproj")
+        let xml = File.ReadAllText(basedirectory + "/" + solutionName + "/" + solutionName + "/" + solutionName + "." + dotNetLanguageFileEnding)
         let doc = XmlDocument() in
             doc.LoadXml xml;
             doc.SelectNodes "/Project/PropertyGroup/TargetFramework/text()"
