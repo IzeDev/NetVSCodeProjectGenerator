@@ -1,17 +1,17 @@
-
+{
+    "version": "0.2.0",
+    "configurations": [
     {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": ".NET Core Launch (console)",
-                "type": "coreclr",
-                "request": "launch",
-                "preLaunchTask": "build",
-                "program": "${workspaceFolder}/NetVSCodeProjectGenerator/bin/Debug/netcoreapp3.1/NetVSCodeProjectGenerator.dll",
-                "args": [],
-                "cwd": "${workspaceFolder}",
-                "stopAtEntry": false,
-                "console": "externalTerminal"
-            },
-        ]
+        "name": ".NET Core Launch (console)",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build solution",
+        "program": "${workspaceFolder}/NetVSCodeProjectGenerator/bin/Debug/net5.0/NetVSCodeProjectGenerator.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "console": "externalTerminal",
+        "stopAtEntry": false,
+        "internalConsoleOptions": "openOnSessionStart"
     }
+    ]
+}

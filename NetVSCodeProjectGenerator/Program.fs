@@ -1,8 +1,7 @@
-﻿open System
+open System
 open System.IO
 open System.Diagnostics
 open System.Xml
-open System.Threading
 
 let baseCommands =
     [|
