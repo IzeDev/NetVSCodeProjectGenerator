@@ -5,7 +5,7 @@ open System.Xml
 
 let baseCommands =
     [|
-        "new sln -o ¤basedirectory¤/¤SolutionName¤";
+        "new sln -o ¤basedirectory¤/¤SolutionName¤"; 
         "new console -lang ¤lang¤ -o ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤";
         "sln ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤.sln add ¤basedirectory¤/¤SolutionName¤/¤SolutionName¤/¤SolutionName¤.¤langFileEnding¤";
     |]
